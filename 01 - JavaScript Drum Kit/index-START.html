@@ -58,7 +58,50 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  // keydown fires play audio
+  // play audio attaches class and plays audio
+  // transition end fires removal of class
 
+  document.body.addEventListener("transitionend", (e) => {
+    if (e.target.classList.contains("key")) removeTransition(e);
+  })
+  //let keys = Array.from(document.body.querySelectorAll(".key"));
+  //keys.forEach((key) => key.addEventListener("transitionend", removeTransition));
+  window.addEventListener("keydown", playAudio);
+  
+  function playAudio(e) {
+    let audioSrc = document.body.querySelectorAll(`audio[data-key="${e.keyCode}"]`)[0];
+    if (!audioSrc) return;
+    audioSrc = audioSrc.getAttribute("src");
+    let audio = new Audio(audioSrc);
+    audio.play();
+    document.querySelectorAll(`div[data-key="${e.keyCode}"]`)[0].classList.add("playing");
+  }
+
+  function removeTransition(e) {
+    e.target.classList.remove("playing");
+  }
+  /*
+  // capture key code to access correct div
+  window.addEventListener("keydown", (e) => {
+    let div = document.body.querySelectorAll(`[data-key="${e.keyCode}"]`)[0];
+    if (div) {
+      // change style
+      div.classList.add("playing");
+      // play sound
+      let audioSrc = document.querySelectorAll(`audio[data-key="${e.keyCode}"]`)[0].getAttribute("src");
+      let audio = new Audio(audioSrc);
+      audio.play();
+    }
+  })
+  // reset on key release
+  window.addEventListener("keyup", (e) => {
+    let div = document.body.querySelectorAll(`[data-key="${e.keyCode}"]`)[0];
+    if (div) {
+      div.classList.remove("playing");
+    }
+  });
+  */
 </script>
 
 
